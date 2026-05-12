@@ -1,7 +1,7 @@
 
 package com.libreria.edex.service;
 
-import com.libreriaedex.model.Usuario;
+import com.libreria.edex.model.Usuario;
 import com.libreria.edex.repository.UsuarioRepository;
 import java.util.List;
 import java.util.Optional;

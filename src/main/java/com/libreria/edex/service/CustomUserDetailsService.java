@@ -1,7 +1,7 @@
 package com.libreria.edex.service;
 
+import com.libreria.edex.model.Usuario;
 import com.libreria.edex.repository.UsuarioRepository;
-import com.libreriaedex.model.Usuario;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService {
     private UsuarioRepository usuarioRepository;
-    private String correo;
-    private String clave;
-    private boolean estado;
+    private String email;
+    private String password;
+    private boolean activo;
 
     public CustomUserDetailsService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;

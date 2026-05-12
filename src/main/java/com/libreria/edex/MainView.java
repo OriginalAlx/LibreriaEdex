@@ -1,16 +1,14 @@
 package com.libreria.edex;
 
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Route;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class MainView extends VerticalLayout {
+@SpringBootApplication
+public class MainView {
 
-    public MainView() {
-        Button button = new Button("Click me",
-                event -> add(new Paragraph("Clicked!")));
+	public static void main(String[] args) {
+		SpringApplication.run(MainView.class, args);
+	}
 
-        add(button);
-    }
 }
+

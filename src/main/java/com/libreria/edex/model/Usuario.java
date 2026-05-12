@@ -1,7 +1,5 @@
-package com.libreriaedex.model;
+package com.libreria.edex.model;
 
-
-import com.libreria.edex.model.Rol;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,13 +12,13 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nombre;     // nombre del usuario
-    private String email;      // correo electrónico
-    private String password;   // contraseña encriptada
-    private boolean activo;    // estado activo/inactivo
+    private String nombre;    
+    private String email;      
+    private String password;   
+    private boolean activo;    
 
     @ManyToOne
-    private Rol rol;           // relación con la entidad Rol
+    private Rol rol;           
 
     public Usuario() {
     }
