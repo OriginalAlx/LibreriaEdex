@@ -42,14 +42,9 @@ public class SecurityConfig extends VaadinWebSecurity {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // Primero permitir acceso público a recursos estáticos y login
-        http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/login").permitAll();
-            auth.requestMatchers("/").permitAll();
-            auth.requestMatchers("/VAADIN/**", "/images/**", "/styles/**").permitAll();
-            auth.anyRequest().authenticated();
-        });
-
+        // Configurar Vaadin Web Security primero
+        super.configure(http);
+        
         // Deshabilitar el formLogin por defecto de Spring para usar nuestra vista Vaadin
         http.formLogin().disable();
         http.logout().disable();
@@ -57,7 +52,12 @@ public class SecurityConfig extends VaadinWebSecurity {
         // Deshabilitar CSRF para simplificar
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/VAADIN/**"));
         
-        // Configurar Vaadin Web Security sin interferir con nuestro login personalizado
-        super.configure(http);
+        // Luego permitir acceso público a recursos estáticos y login
+        http.authorizeHttpRequests(auth -> {
+            auth.requestMatchers("/login").permitAll();
+            auth.requestMatchers("/").permitAll();
+            auth.requestMatchers("/VAADIN/**", "/images/**", "/styles/**").permitAll();
+            auth.anyRequest().authenticated();
+        });
     }
 }
