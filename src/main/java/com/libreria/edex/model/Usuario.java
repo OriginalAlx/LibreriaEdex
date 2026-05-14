@@ -6,14 +6,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Entity
-public class Usuario {
+public class Usuario  implements UserDetailsService{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nombre;    
+    private String username;    
     private String email;      
     private String password;   
     private boolean activo;    
@@ -29,7 +32,7 @@ public class Usuario {
 
     public Usuario(Integer id, String nombre, String email, String password, boolean activo, Rol rol, Cliente cliente) {
         this.id = id;
-        this.nombre = nombre;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.activo = activo;
@@ -47,11 +50,11 @@ public class Usuario {
     }
 
     public String getNombre() {
-        return nombre;
+        return username;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -92,6 +95,11 @@ public class Usuario {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     

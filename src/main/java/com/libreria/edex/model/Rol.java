@@ -2,27 +2,31 @@ package com.libreria.edex.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
-
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.List;
 
 @Entity
+@Table(name = "rol")
 public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false, unique = true)
-    private String nombre; // ADMIN, EMPLEADO, CLIENTE
+    private String nombre; 
 
     public Rol() {
     }
 
-    public Rol(Integer id, String nombre) {
+    public Rol(Integer id, String nombre, List<Usuario> usuarios) {
         this.id = id;
         this.nombre = nombre;
+        this.usuarios = usuarios;
     }
 
     public Integer getId() {
@@ -40,6 +44,17 @@ public class Rol {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
     
     
+    
+    @OneToMany(mappedBy = "rol", fetch = FetchType.LAZY) 
+    private List<Usuario> usuarios; 
 }

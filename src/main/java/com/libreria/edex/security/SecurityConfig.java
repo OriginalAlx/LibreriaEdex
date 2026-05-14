@@ -8,9 +8,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @EnableWebSecurity
 @Configuration
@@ -42,23 +42,22 @@ public class SecurityConfig extends VaadinWebSecurity {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // Configurar vistas públicas
+        // Permitir acceso público al login y a la raíz si es necesario
         http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/login/**").permitAll();
+            auth.requestMatchers("/login").permitAll();
             auth.requestMatchers("/").permitAll();
-            auth.anyRequest().authenticated();
+            // Permitir recursos estáticos
+            auth.requestMatchers("/VAADIN/**", "/images/**").permitAll();
         });
-        
-        // Configurar login form
-        http.formLogin(form -> form
-            .loginPage("/login")
-            .permitAll()
-            .defaultSuccessUrl("/", true)
-            .failureUrl("/login?error=true")
-        );
-        
-        http.logout(logout -> logout.logoutSuccessUrl("/login"));
-        
+
+        // Configurar Vaadin Web Security (esto maneja las rutas de Vaadin)
         super.configure(http);
+
+        // Deshabilitar el formLogin por defecto de Spring para usar nuestra vista Vaadin
+        http.formLogin().disable();
+        http.logout().disable();
+        
+        // Deshabilitar CSRF para simplificar (opcional, pero recomendado para pruebas iniciales)
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/VAADIN/**"));
     }
 }
