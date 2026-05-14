@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Usuario {
@@ -20,16 +21,20 @@ public class Usuario {
     @ManyToOne
     private Rol rol;           
 
+    @OneToOne
+    private Cliente cliente;
+
     public Usuario() {
     }
 
-    public Usuario(Integer id, String nombre, String email, String password, boolean activo, Rol rol) {
+    public Usuario(Integer id, String nombre, String email, String password, boolean activo, Rol rol, Cliente cliente) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.password = password;
         this.activo = activo;
         this.rol = rol;
+        this.cliente = cliente;
     }
     
     
@@ -79,6 +84,14 @@ public class Usuario {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
     
     
