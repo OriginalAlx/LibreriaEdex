@@ -19,14 +19,20 @@ import jakarta.servlet.http.HttpServletRequest;
 public class Inicio extends VerticalLayout {
     
     public Inicio() {
+        // Si ya está logueado, redirigir al catálogo
+        if (VaadinService.getCurrentRequest() != null && 
+            ((VaadinServletRequest) VaadinService.getCurrentRequest()).getUserPrincipal() != null) {
+            UI.getCurrent().navigate("catalogo");
+            return;
+        }
+
         setSizeFull();
         setAlignItems(FlexComponent.Alignment.CENTER);
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
         Image logo = new Image("images/libreria-edex-logo.png", "Logo de la aplicación");
         logo.setWidth("300px");
-        logo.getStyle().set("height", "auto") 
-                .set("margin-bottom", "5px");
+        logo.getStyle().set("height", "auto").set("margin-bottom", "5px");
 
         TextField usuario = new TextField("Usuario *");
         usuario.setWidth("300px");
@@ -78,12 +84,16 @@ public class Inicio extends VerticalLayout {
             }
 
             try {
+                // Obtener el request HTTP actual
                 VaadinServletRequest vaadinRequest = (VaadinServletRequest) VaadinService.getCurrentRequest();
                 HttpServletRequest httpReq = vaadinRequest.getHttpServletRequest();
                 
+                // Autenticar con Spring Security
                 httpReq.login(user, pass);
                 
                 Notification.show("Bienvenido " + user);
+                
+                // Redirigir al catálogo
                 UI.getCurrent().navigate("catalogo"); 
                 
             } catch (ServletException ex) {
