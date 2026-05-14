@@ -91,6 +91,9 @@ public class Inicio extends VerticalLayout {
                 // Autenticar con Spring Security
                 httpReq.login(user, pass);
                 
+                // Guardar el usuario en la sesión de Vaadin
+                UI.getCurrent().getSession().setAttribute("user", user);
+                
                 Notification.show("Bienvenido " + user);
                 
                 // Redirigir al catálogo

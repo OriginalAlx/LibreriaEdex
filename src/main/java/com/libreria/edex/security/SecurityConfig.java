@@ -42,16 +42,15 @@ public class SecurityConfig extends VaadinWebSecurity {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // Permitir acceso público al login y a la raíz si es necesario
+        // Configurar Vaadin Web Security primero
+        super.configure(http);
+        
+        // Permitir acceso público al login y recursos estáticos
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/login").permitAll();
             auth.requestMatchers("/").permitAll();
-            // Permitir recursos estáticos
             auth.requestMatchers("/VAADIN/**", "/images/**").permitAll();
         });
-
-        // Configurar Vaadin Web Security (esto maneja las rutas de Vaadin)
-        super.configure(http);
 
         // Deshabilitar el formLogin por defecto de Spring para usar nuestra vista Vaadin
         http.formLogin().disable();
