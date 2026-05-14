@@ -42,23 +42,19 @@ public class SecurityConfig extends VaadinWebSecurity {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // Configurar vistas públicas
+        // Configurar vistas públicas ANTES de llamar al configure de Vaadin
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/login/**").permitAll();
             auth.requestMatchers("/").permitAll();
-            auth.anyRequest().authenticated();
         });
         
-        // Configurar login form
-        http.formLogin(form -> form
-            .loginPage("/login")
-            .permitAll()
-            .defaultSuccessUrl("/", true)
-            .failureUrl("/login?error=true")
-        );
-        
-        http.logout(logout -> logout.logoutSuccessUrl("/login"));
-        
+        // Llamar al configure de VaadinWebSecurity que configura las rutas de Vaadin
+        // Esto habilita el soporte para vistas Vaadin protegidas
         super.configure(http);
+        
+        // NOTA: No usamos http.formLogin() ni http.logout() aquí porque
+        // estamos usando una vista personalizada de Vaadin (Inicio) que maneja
+        // la autenticación manualmente mediante httpReq.login().
+        // Agregar formLogin() interfiere con la navegación de Vaadin Flow.
     }
 }
