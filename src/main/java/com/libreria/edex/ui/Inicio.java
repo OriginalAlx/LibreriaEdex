@@ -15,15 +15,19 @@ import com.vaadin.flow.component.UI;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 
-@Route("login")
+@Route(value = "login", layout = null)
 public class Inicio extends VerticalLayout {
     
     public Inicio() {
-        // Si ya está logueado, redirigir al catálogo
-        if (VaadinService.getCurrentRequest() != null && 
-            ((VaadinServletRequest) VaadinService.getCurrentRequest()).getUserPrincipal() != null) {
-            UI.getCurrent().navigate("catalogo");
-            return;
+        // Verificar autenticación de forma segura
+        try {
+            VaadinServletRequest request = (VaadinServletRequest) VaadinService.getCurrentRequest();
+            if (request != null && request.getUserPrincipal() != null) {
+                UI.getCurrent().navigate("catalogo");
+                return;
+            }
+        } catch (Exception e) {
+            // Si no hay contexto de request, continuar mostrando el login
         }
 
         setSizeFull();
